@@ -3,7 +3,9 @@ const input = require("fs")
   .toString()
   .trim()
   .split("\n");
+
 const N = input.shift();
+
 const newarr = input.map((el) => el.split(" ").map(Number));
 
 newarr[0].sort((a, b) => a - b);
