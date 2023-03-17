@@ -1,118 +1,57 @@
 const IN = require("fs")
-  .readFileSync("./input.txt")
+  .readFileSync("/dev/stdin")
   .toString()
   .trim()
   .split("\n");
 const N = +IN.shift();
-// console.log(IN);
 
 const sche = IN.map((el) => {
   return el.trim().split(" ").map(Number);
 }).sort((a, b) => a[0] - b[0]);
-const maxDay = sche[sche.length - 1][0];
-const visit = new Array(maxDay + 1)
-  .fill(0)
-  .map((el, idx) => ((idx + 1) % 6 == 0 || (idx + 1) % 7 == 0 ? 1 : 0));
-visit[0] = 0;
 
 const solve = () => {
   let day = 0;
   let addDay = 0;
   for (let i = 0; i < sche.length; i++) {
     let [di, ti] = sche[i];
-    console.log(di, ti, day, addDay);
-    while (ti) {
-      if (visit[day++]) continue;
-      ti--;
-      day++;
+
+    let limitDay = di - Math.floor(di / 7) * 2;
+
+    if (di % 7 == 6) limitDay--;
+
+    day += ti;
+
+    if (day > limitDay) {
+      addDay += day - limitDay;
+      day = limitDay;
     }
-    if (day >= di) {
-      addDay += day - di;
-      addDay += ti;
-      if (addDay > di) {
-        addDay = -1;
-        return -1;
-      }
-      break;
-    } else {
-      visit[day]++;
-    }
+    if (addDay > di) return -1;
   }
   return addDay;
 };
-
 const answer = solve();
 console.log(answer);
-// day = day;
-//   if (di < day) {
-//     addDay += day - di;
-//     day = di;
-//   }
-//   if (addDay > di) {
-//     answer = -1;
-//     break;
-//   }
-// const maps = new Map();
-// const sche = IN.map((el) => {
-//   return el
-//     .trim()
-//     .split(" ")
-//     .map((val, idx) => {
-//       if (idx == 0) {
-//         if (+val % 6 === 0) {
-//           return +val - 1;
-//         }
-//         if (+val % 7 === 0) {
-//           return +val - 2;
-//         } else return +val;
-//       } else {
-//         return +val;
-//       }
-//     });
-// }).map((el) => {
-//   let [di, ti] = el;
-//   di = +di - Math.floor(+di / 7) * 2;
-//   const res = maps.get(di);
-//   if (res === undefined) {
-//     maps.set(di, ti);
-//   } else maps.set(di, res + ti);
-// });
-// //   .map((val, idx) => {
-// //   if (idx == 0) {
-// //     return;
-// //   } else return +val;
-// // });
-// // .map((el) => {
-// //   let [di, ti] = el;
-// //   di = +di - Math.floor(+di / 7) * 2;
-// //   if (maps[di] == undefined) {
-// //     maps[di] = +ti;
-// //   } else maps[di] += ti;
-// // });
 
-// // console.log(maps);
-// let day = 0;
-// let addDay = 0;
-// let answer = [...maps].sort((a, b) => a[0] - b[0]);
-// for (let i = 0; i < answer.length; i++) {
-//   const [di, ti] = answer[i];
-//   day += ti;
-//   if (di < day) {
-//     addDay += day - di;
-//     day = di;
+// const [[n], ...tasks] = (require("fs").readFileSync("./input.txt") + "")
+//   .trim()
+//   .split("\n")
+//   .map((v) => v.split(" ").map(Number));
+
+// const getSt = (d) => Math.floor(d / 7) * 5 + (d % 7 === 6 ? 5 : d % 7);
+// tasks.sort((a, b) => a[0] - b[0]);
+// let totalSt = 0;
+// let exWork = 0;
+// for (const task of tasks) {
+//   let [d, t] = task;
+//   if (t > getSt(d) - totalSt) {
+//     exWork += t - getSt(d) + totalSt;
+//     totalSt = getSt(d);
+//   } else {
+//     totalSt += t;
 //   }
-//   if (addDay > di) {
-//     answer = -1;
+//   if (exWork > d) {
+//     exWork = -1;
 //     break;
 //   }
 // }
-// answer = answer === -1 ? -1 : addDay;
-// console.log(answer);
-// // console.log(newarr);
-// // sche.forEach((val, key) => console.log(val, key));
-
-// // console.log(SCH);
-// // console.log(maps);
-// // sche.sort((a, b) => a[0] - b[0]);
-
-// // console.log(sche);
+// console.log(exWork);
