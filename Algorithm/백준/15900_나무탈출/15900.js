@@ -4,23 +4,25 @@ const input = require("fs")
   .trim()
   .split("\n");
 
+let answer = 0;
 const DFS = (node, dep) => {
   visit[node] = 1;
-  //   console.log(node, " ");
   let cnt = 0;
 
-  for (let i = 0; i < adjlist[node].length; i++) {
-    const nextNode = adjlist[node][i];
+  for (let i = 0; i < adjList[node].length; i++) {
+    const nextNode = adjList[node][i];
     if (visit[nextNode]) continue;
-    cnt += DFS(nextNode, dep + 1);
-    console.log(node, cnt);
+    cnt++;
+    DFS(nextNode, dep + 1);
   }
-
-  return cnt;
+  if (!cnt) {
+    answer += dep;
+    return;
+  }
 };
 
 const N = +input.shift();
-const adjlist = Array.from(Array(N + 1), () => new Array());
+const adjList = Array.from(Array(N + 1), () => new Array());
 const visit = new Array(N + 1).fill(0);
 
 const Trees = input
@@ -32,8 +34,9 @@ const Trees = input
     n1 = +n1;
     n2 = +n2;
 
-    adjlist[n1].push(n2);
-    adjlist[n2].push(n1);
+    adjList[n1].push(n2);
+    adjList[n2].push(n1);
   });
-const answer = DFS(1, 0);
-console.log(answer);
+
+DFS(1, 0);
+console.log(answer % 2 ? "Yes" : "No");

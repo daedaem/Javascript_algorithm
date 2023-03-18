@@ -1,13 +1,21 @@
-const IN = require("fs")
-  .readFileSync("/dev/stdin")
+const [[N], ...sche] = require("fs")
+  .readFileSync("./input.txt")
   .toString()
   .trim()
-  .split("\n");
-const N = +IN.shift();
+  .split("\n")
+  .map((el) => el.split(" ").map(Number));
+sche.sort((a, b) => a[0] - b[0]);
 
-const sche = IN.map((el) => {
-  return el.trim().split(" ").map(Number);
-}).sort((a, b) => a[0] - b[0]);
+// const IN = require("fs")
+//   .readFileSync("./input.txt")
+//   .toString()
+//   .trim()
+//   .split("\n");
+// const N = +IN.shift();
+
+// const sche = IN.map((el) => {
+//   return el.trim().split(" ").map(Number);
+// }).sort((a, b) => a[0] - b[0]);
 
 const solve = () => {
   let day = 0;
